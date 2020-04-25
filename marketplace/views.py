@@ -27,6 +27,15 @@ def add_product(request):
     return render(request, 'product/add_product.html', {'form': form})
 
 
+def explanation(request):
+    import os
+    cmd = "notepad.exe explanation/explanation.txt"
+    os.system(cmd)
+    print(os.curdir)
+    template = loader.get_template('landing/index.html')
+    return HttpResponse(template.render({"user": request.user}))
+
+
 class ProductList(generic.ListView):
     model = Product
     context_object_name = 'product_list'
