@@ -23,6 +23,7 @@ class Product(models.Model):
     description = models.TextField(max_length=1023)
     price = models.IntegerField()
     old_price = models.IntegerField()
+    seller = models.CharField(max_length=255)
     # category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
     # subcategory_id = models.ForeignKey(Subcategory, on_delete=models.CASCADE)
     length = models.IntegerField()

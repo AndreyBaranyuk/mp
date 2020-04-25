@@ -1,0 +1,22 @@
+.block_content{
+    left: auto;
+    right: auto;
+}
+h3{
+    text-align: center;
+}
+.container{
+    margin-top: 70px;!important;
+    margin-left: 10%;!important;
+    margin-right: 10%;!important;
+}
+.card-header{
+    text-align: center;
+}
+.price{
+    font-size: 20px;
+    font-weight: 300;
+}
+.product{
+    margin: 15px auto 0px;
+}

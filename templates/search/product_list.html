@@ -1,0 +1,77 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    {% if mid_price %}
+        <p> Средняя арифметическая цена всех товаров - {{ mid_price }}</p>
+    {% endif %}
+    {% if product_list %}
+        {% if not second %}
+        <form action="/product_list_sort/" method="POST" id="sort">
+            {% csrf_token %}
+            <p>Сортировка и фильтрация:</p>
+            <select name="param" form="sort">
+                <option>продавец</option>
+                <option>цвет</option>
+                <option>сначала новые</option>
+                <option>сначала старые</option>
+                <option>дешевле</option>
+                <option>дороже</option>
+                <option>минимальная цена</option>
+                <option>максимальная цена</option>
+                <option>средняя цена</option>
+            </select>
+            <input value="sort" type="hidden" name="name">
+            <input type="submit" value="подобрать">
+        </form>
+        {% else %}
+            {% if param == "цвет" or param == "продавец"%}
+            <form action="/product_list_sort/" method="POST" id="sort_param">
+                {% csrf_token %}
+                <p>Сортировка:</p>
+                <select name="value" form="sort_param">
+                    {% for i in params%}
+                        <option>{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <input value={{ param }} type="hidden" name="param">
+                <input value="sort_param" type="hidden" name="name">
+                <input type="submit" value="подобрать">
+            </form>
+                {% endif %}
+        {% endif %}
+        {% for product in product_list %}
+            <div class = "card d-inline-block product col-sm-12">
+                <h1 class = "card-header" href="{{ product.get_absolute_url }}">{{ product.name }}</h1>
+                <div class = "card-body">
+                    <div class="card-group">
+                    <p class = "head-list">Описание: </p>
+                    <p class = "card-text"> {{ product.description }}</p>
+                    </div>
+                    <div class="card-group">
+                    <p class = "head-list">Цвет: </p>
+                    <p> {{ product.color }}</p>
+                        </div>
+                    <div class="card-group">
+                    <p class = "head-list">Дата выставления: </p>
+                    <p> {{ product.expose_datetime }}</p>
+                        </div>
+                    <div class="card-group">
+                    <p class = "head-list">Параметры(Высота х Ширина х Длина): </p>
+                    <p> {{ product.height }}x{{ product.width }}x{{ product.length }}</p>
+                        </div>
+                    <div class="card-group">
+                    <p class = "head-list">Старая цена: </p>
+                    <p> {{ product.old_price }}</p>
+                        </div>
+                    <div class="card-group">
+                    <p class = "head-list">Причина снижения цены: </p>
+                    <p> {{ product.reason_dev }}</p>
+                        </div>
+                    <div class = "card-footer">
+                        <p class="price"> {{ product.price }}Ꝑ</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -18,3 +18,5 @@ class AddProduct(forms.ModelForm):
         model = Product
         fields = ('name', 'reason_dev', 'color', 'description', 'price', 'price', 'old_price',
                   'length', 'height', 'width')
+
+
