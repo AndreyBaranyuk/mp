@@ -7,8 +7,9 @@ h3{
 }
 .container{
     margin-top: 70px;!important;
-    margin-left: 10%;!important;
-    margin-right: 10%;!important;
+}
+.cont{
+    align-content: center;
 }
 .card-header{
     text-align: center;

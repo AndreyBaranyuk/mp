@@ -50,6 +50,38 @@ class ProductList(generic.ListView):
         return Product.objects.all()
 
 
+class ProductD(generic.DetailView):
+    template_name = 'product/product.html'
+    model = Product
+
+
+def edit_product(request, pk):
+    product = Product.objects.get(id=pk)
+    if request.POST:
+        product.name = request.POST.get("name")
+        product.description = request.POST.get("description")
+        product.price = request.POST.get("price")
+        product.old_price = request.POST.get("old_price")
+        product.color = request.POST.get("color")
+        product.reason_dev = request.POST.get("reason_dev")
+        product.width = request.POST.get("width")
+        product.length = request.POST.get("length")
+        product.height = request.POST.get("height")
+        product.save()
+        return HttpResponseRedirect(product.get_absolute_url())
+    else:
+        return render(request, 'product/edit_product.html', {"product": product})
+
+
+def delete_product(request, pk):
+    template_name = 'product/delete_product.html'
+    msg = "Вы не продавец этого товара"
+    if request.user == Product.objects.get(id=pk).seller:
+        Product.objects.filter(id=pk).delete()
+        msg = "Товар успешно удалён"
+    return render(request, template_name, {"message": msg})
+
+
 def product_list_sort(request):
     if request.method == "POST":
         param = request.POST['param']

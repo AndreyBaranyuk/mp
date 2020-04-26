@@ -31,6 +31,9 @@ class Product(models.Model):
     width = models.IntegerField()
     expose_datetime = models.DateTimeField(auto_now=True)
 
+    def get_absolute_url(self):
+        return "/product/%i" % self.id
+
     def __str__(self):
         return self.name
 
