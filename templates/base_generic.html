@@ -43,13 +43,37 @@
     </nav>
 </header>
 <main>
-<div class = "container card">
+<div class = "container card white">
     {% block content %}
     {% endblock %}
 </div>
 </main>
 </body>
-<footer>
-     БАРАНЮК Я
+<footer class="page-footer font-small teal pt-4">
+  <div class="container-fluid text-center text-md-left">
+    <div class="row">
+      <div class="col-md-6 mt-md-0 mt-3">
+        <h5 class="text-uppercase font-weight-bold">Об авторе</h5>
+        <p class="text-justify">Данное приложение было разработано студентом Финансового университета,
+        учащегося ПМиИТ, группы ПИ18-2. Я прилагал большие ежеденевные училия, изучил
+        следущие технологии до или в процессе написания кода:</p>
+      </div>
+      <hr class="clearfix w-100 d-md-none pb-3">
+      <div class="col-md-6 mb-md-0 mb-3">
+        <h5 class="text-uppercase font-weight-bold">Список технологий:</h5>
+        <p>
+            <ul>
+          <li>Python: Django</li>
+          <li>HTML</li>
+          <li>Jinja2</li>
+          <li>CSS: Bootstrap</li>
+      </ul>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a target="_blank" href="http://vk.com/andbrn">Баранюк Андрей</a>
+  </div>
 </footer>
 </html>

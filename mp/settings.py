@@ -26,9 +26,14 @@ SECRET_KEY = 'ojg8$f$xhbjw$&**+apeeqxt5@g)-qj(v6y$z0v54aj5y3e82f'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
-# Application definition
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# if DEBUG:
+#     EMAIL_HOST = 'localhost'
+#     EMAIL_PORT = 8000
+#     EMAIL_HOST_USER = 'exponentmp@gmail.com'
+#     EMAIL_HOST_PASSWORD = 'expexpexp'
+#     EMAIL_USE_TLS = False
+#     DEFAULT_FROM_EMAIL = 'exponentmp@gmail.com'
 
 INSTALLED_APPS = [
     'marketplace.apps.MarketplaceConfig',
@@ -100,7 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

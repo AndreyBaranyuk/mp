@@ -1,8 +1,53 @@
 {% extends "base_generic.html" %}
-{% block content %}
-    <form class="form-group" action="" method="post">
-    {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Добавить товар">
+{% block content%}
+    <div class = "card d-inline-block product col-sm-11">
+    <form action={% url "add_product" %} method="post" class="form">
+        {% csrf_token %}
+        <h1 class = "card-header">Добавление товара</h1>
+        <div class = "card-body form-group">
+            <div class="card-group form-group">
+                <p class = "head-list col-form-label col-2">Название: </p>
+                <input name="name" class="form-control col-10" type="text" value="{{ product.name }}">
+            </div>
+            <div class="card-group form-group">
+                <p class = "head-list col-form-label col-2">Описание: </p>
+                <textarea name="description" class="form-control col-10" rows="10">{{ product.description }}</textarea>
+            </div>
+            <div class="card-group form-group">
+                <p class = "head-list col-form-label col-2">Цвет: </p>
+                <input name="color" class="form-control col-10" type="text" value="{{ product.color }}">
+            </div>
+            <div class="card-group form-group">
+                <p class = "head-list col-form-label col-2">Ширина: </p>
+                <input name="width" class="form-control col-10" type="number" value="{{ product.width }}">
+            </div>
+            <div class="card-group form-group">
+                <p class = "head-list col-form-label col-2">Высота: </p>
+                <input name="height" class="form-control col-10" type="number" value="{{ product.height }}">
+            </div>
+            <div class="card-group form-group">
+                <p class = "head-list col-form-label col-2">Длина: </p>
+                <input name="length" class="form-control col-10" type="number" value="{{ product.length }}">
+            </div>
+            <div class="card-group form-group">
+                <p class = "head-list col-form-label col-2">Старая цена: </p>
+                <input name="old_price" class="form-control col-10" type="number" value="{{ product.old_price }}">
+            </div>
+            <div class="card-group form-group">
+                <p class = "head-list col-form-label col-2">Причина снижения цены: </p>
+                <input name="reason_dev" class="form-control col-10" type="text" value="{{ product.reason_dev }}">
+            </div>
+           <div class="card-group form-group">
+                <p class = "head-list col-form-label col-2">Цена: </p>
+                <input name="price" class="form-control col-10" type="number" value={{ product.price }}>
+            </div>
+        </div>
+        <div class="row card-footer">
+            <div class = "col-1 d-inline-block"></div>
+        <div class = "col-9 d-inline-block">
+            <button type="submit" class="btn btn-success">Добавить</button>
+        </div>
+        </div>
     </form>
+    </div>
 {% endblock %}

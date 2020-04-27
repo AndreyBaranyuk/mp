@@ -30,7 +30,7 @@
                 <p>Сортировка:</p>
                 <select name="value" form="sort_param">
                     {% for i in params%}
-                        <option>{{ i }}</option>
+                        <option>{{ i.username }}</option>
                     {% endfor %}
                 </select>
                 <input value={{ param }} type="hidden" name="param">

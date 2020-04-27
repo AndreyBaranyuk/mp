@@ -1,0 +1,49 @@
+{% extends "base_generic.html" %}
+{% block content%}
+{% if form.errors %}
+{{form.errors}}
+    {% endif %}
+
+    {% if next %}
+        {% if user.is_authenticated %}
+            <p>У вас нет доступа к этой странице</p>
+        {% else %}
+            <p>Войдите в свой аккаунт</p>
+        {% endif %}
+    {% endif %}
+    <div class = "card d-inline-block col-sm-11">
+        <form method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+            <h1 class = "card-header">Регистрация</h1>
+            <div class = "card-body">
+                <div class="card-group form-group">
+                    <p class = "head-list col-form-label col-2">Логин: </p>
+                    <input name="username" class="form-control col-10" type="text">
+                </div>
+                <div class="card-group form-group">
+                    <p class = "head-list col-form-label col-2">Пароль: </p>
+                    <input name="password1" class="form-control col-10" type="password">
+                </div>
+                <div class="card-group form-group">
+                    <p class = "head-list col-form-label col-2">Подтвердите пароль: </p>
+                    <input name="password2" class="form-control col-10" type="password">
+                </div>
+                <div class="card-group form-group">
+                    <p class = "head-list col-form-label col-2">Кто вы?</p>
+                    <div class = "form-check col-2">
+                        <input type="radio" class="form-check-input"
+                               name="group" value="seller">
+                        <label class="form-check-label">Продавец  </label>
+                    </div>
+                    <div class = "form-check col-2">
+                        <input type="radio" class="form-check-input"
+                               name="group" value="customer">
+                        <label class="form-check-label">Покупатель</label>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" value="Зарегистрироваться" class = "btn btn-dark"/>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+    </div>
+{% endblock %}

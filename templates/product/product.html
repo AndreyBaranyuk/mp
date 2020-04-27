@@ -29,11 +29,13 @@
             </div>
             <div class = "card-footer">
                 <div class="price col-8 d-inline-block"> {{ product.price }}Ꝑ</div>
+                {% if user == product.seller%}
                 <div class = "col-1 d-inline-block"></div>
                 <a class="btn btn-warning" href="{{ product.get_absolute_url }}/edit">Изменить</a>
                 <div class = "col-1 d-inline-block">
                     <a class="btn btn-danger" href="{{ product.get_absolute_url}}/delete">Удалить</a>
                 </div>
+                {% endif %}
 
             </div>
         </div>

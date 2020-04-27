@@ -2,39 +2,36 @@
 
 {% block content %}
 
-{% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
-{% endif %}
+    {% if form.errors %}
+        <p>Неверный пароль</p>
+    {% endif %}
 
-{% if next %}
-  {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-  {% else %}
-    <p>Please login to see this page.</p>
-  {% endif %}
-{% endif %}
-
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-<table>
-
-<tr>
-  <td>{{ form.username.label_tag }}</td>
-  <td>{{ form.username }}</td>
-</tr>
-
-<tr>
-  <td>{{ form.password.label_tag }}</td>
-  <td>{{ form.password }}</td>
-</tr>
-</table>
-
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
-
-{# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+    {% if next %}
+        {% if user.is_authenticated %}
+            <p>У вас нет доступа к этой странице</p>
+        {% else %}
+            <p>Войдите в свой аккаунт</p>
+        {% endif %}
+    {% endif %}
+    <div class = "card d-inline-block col-sm-11">
+        <form method="post" action="{% url 'login' %}?next=/">
+            {% csrf_token %}
+            <h1 class = "card-header">Вход</h1>
+            <div class = "card-body">
+                <div class="card-group form-group">
+                    <p class = "head-list col-form-label col-2">Логин: </p>
+                    <input name="username" class="form-control col-10" type="text">
+                </div>
+                <div class="card-group form-group">
+                    <p class = "head-list col-form-label col-2">Пароль: </p>
+                    <input name="password" class="form-control col-10" type="password">
+                </div>
+            </div>
+            <input type="submit" value="Войти" class = "btn btn-dark"/>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+    </div>
+    <p class = "d-inline-block"><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
+    <p class = "d-inline-block"><a href="{% url 'register' %}">Регистрация</a></p>
 
 {% endblock %}

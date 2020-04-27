@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 # class Category(models.Model):
 #     name = models.CharField(max_length=50)
@@ -23,7 +23,8 @@ class Product(models.Model):
     description = models.TextField(max_length=1023)
     price = models.IntegerField()
     old_price = models.IntegerField()
-    seller = models.CharField(max_length=255)
+    seller = models.ForeignKey(User, on_delete=models.CASCADE)
+    # seller = models.CharField(max_length=255)
     # category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
     # subcategory_id = models.ForeignKey(Subcategory, on_delete=models.CASCADE)
     length = models.IntegerField()
@@ -37,14 +38,3 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-#
-# class Image(models.Model):
-#     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, default=1)
-#     # image = models.ImageField()
-
-
-# class Ad(models.Model):
-#     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-#
-#     def __str__(self):
-#         return self.id

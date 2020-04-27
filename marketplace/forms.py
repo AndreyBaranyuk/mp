@@ -1,17 +1,16 @@
-from django import forms
 from .models import Product
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
-# class AddProduct(forms.Form):
-#     name = forms.CharField(max_length=255)
-#     reason_dev = forms.CharField(max_length=1023)
-#     color = forms.CharField(max_length=50)
-#     description = forms.CharField(max_length=1023)
-#     price = forms.IntegerField()
-#     old_price = forms.IntegerField()
-#     length = forms.IntegerField()
-#     height = forms.IntegerField()
-#     width = forms.IntegerField()
+class Register(UserCreationForm):
+    email = forms.EmailField(max_length=200, help_text='Required')
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
+
 
 class AddProduct(forms.ModelForm):
     class Meta:

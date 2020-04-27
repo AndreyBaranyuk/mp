@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "base_generic.html" %}
+{% block content%}
+    {% if message == "Вы успешно удалили товар" %}
+        <div class=" alert alert-danger">
+    {% else %}
+        <div class=" alert alert-success">
+    {% endif %}
+{{ message }}
+    <br>
+    <a class="alert-link" href={% url 'product_list'%}>К списку товаров</a>
+</div>
+{% endblock %}

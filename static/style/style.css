@@ -2,6 +2,18 @@
     left: auto;
     right: auto;
 }
+main{
+    background-image: url("../img/phone.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    left: 0; right: 0; top: 0; bottom: 0;
+   }
+main{
+    color: black;
+   }
+.white{
+    background-color: #cacaca
+}
 h3{
     text-align: center;
 }

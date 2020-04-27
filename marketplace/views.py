@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-import inspect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView
+from django.views.generic.edit import FormView
 from .forms import AddProduct
 from .models import Product
 from django.views import generic
 from django.template import loader, Context
+from django.contrib.auth.models import User
 
 
 def index(request):
@@ -55,9 +57,28 @@ class ProductD(generic.DetailView):
     model = Product
 
 
+class Login(LoginView):
+    redirect_to = '/'
+
+
+class RegisterFormView(FormView):
+    form_class = UserCreationForm
+    success_url = "/accounts/login"
+    template_name = "registration/register.html"
+
+    def form_valid(self, form):
+        form.save()
+        return super(RegisterFormView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        return super(RegisterFormView, self).form_invalid(form)
+
+
 def edit_product(request, pk):
     product = Product.objects.get(id=pk)
     if request.POST:
+        if request.user.id != Product.objects.get(id=pk).seller:
+            render(request, 'product/product_edited.html', {"message": "У вас нет прав на изменение этого товара"})
         product.name = request.POST.get("name")
         product.description = request.POST.get("description")
         product.price = request.POST.get("price")
@@ -127,7 +148,8 @@ def product_list_sort(request):
                                                                 'params': params})
         if request.POST['name'] == 'sort_param':
             if param == "продавец":
-                queryset = Product.objects.all().filter(seller=request.POST['value'])
+                seller = User.objects.all().get(username=request.POST['value'])
+                queryset = Product.objects.all().filter(seller=seller.id)
             if param == "цвет":
                 queryset = Product.objects.all().filter(color=request.POST['value'])
         return render(request, 'search/product_list.html', {'product_list': queryset})
