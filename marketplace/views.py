@@ -3,18 +3,19 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.views.generic.edit import FormView
-from .forms import AddProduct
+from .forms import AddProduct, RegistrationForm
 from .models import Product
 from django.views import generic
 from django.template import loader, Context
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
-
+# главная страница
 def index(request):
     template = loader.get_template('landing/index.html')
     return HttpResponse(template.render({"user": request.user}))
 
 
+# страница добавления продукта
 def add_product(request):
     if request.method == "POST":
         form = AddProduct(request.POST)
@@ -29,15 +30,17 @@ def add_product(request):
     return render(request, 'product/add_product.html', {'form': form})
 
 
+# вызов справки
 def explanation(request):
     import os
-    cmd = "notepad.exe explanation/explanation.txt"
+    cmd = "notepad.exe explanation/explanation.txt"  # с помощью вызоыва блокнота через командную строку
     os.system(cmd)
     print(os.curdir)
     template = loader.get_template('landing/index.html')
     return HttpResponse(template.render({"user": request.user}))
 
 
+# список продуктов
 class ProductList(generic.ListView):
     model = Product
     context_object_name = 'product_list'
@@ -52,28 +55,36 @@ class ProductList(generic.ListView):
         return Product.objects.all()
 
 
+# подробное представление продукта
 class ProductD(generic.DetailView):
     template_name = 'product/product.html'
     model = Product
 
 
+# авторизация
 class Login(LoginView):
     redirect_to = '/'
 
 
-class RegisterFormView(FormView):
-    form_class = UserCreationForm
-    success_url = "/accounts/login"
-    template_name = "registration/register.html"
+# регистрация
+def register(request):
+    form = RegistrationForm(request.POST or None)
 
-    def form_valid(self, form):
-        form.save()
-        return super(RegisterFormView, self).form_valid(form)
+    if form.is_valid():
+        new_user = form.save(commit=False)
+        new_user.username = form.cleaned_data['username']
+        new_user.set_password(form.cleaned_data['password1'])
+        new_user.email = form.cleaned_data['email']
+        new_user.save()
+        new_user.groups.add(Group.objects.get(name='customer'))
+        return HttpResponseRedirect('/accounts/login')
+    context = {
+        'form': form
+    }
+    return render(request, 'registration/register.html', context)
 
-    def form_invalid(self, form):
-        return super(RegisterFormView, self).form_invalid(form)
 
-
+# редактирование продукта
 def edit_product(request, pk):
     product = Product.objects.get(id=pk)
     if request.POST:
@@ -94,6 +105,7 @@ def edit_product(request, pk):
         return render(request, 'product/edit_product.html', {"product": product})
 
 
+# удаление продукта
 def delete_product(request, pk):
     template_name = 'product/delete_product.html'
     msg = "Вы не продавец этого товара"
@@ -103,9 +115,11 @@ def delete_product(request, pk):
     return render(request, template_name, {"message": msg})
 
 
+# сортировка продуктов по различным признакам
 def product_list_sort(request):
+    queryset = Product.objects.all()
     if request.method == "POST":
-        param = request.POST['param']
+        param = request.POST['param']  # признак сортировки
         queryset = Product.objects.all()
         if request.POST['name'] == 'sort':
             if param == "дешевле":
@@ -136,12 +150,13 @@ def product_list_sort(request):
             if param == "сначала старые":
                 queryset = sorted(queryset, key=lambda k: k.expose_datetime)
                 return render(request, 'search/product_list.html', {'product_list': queryset})
-            params = []
+            params = []  # список для отображению пользователей продавцов или цветов на выбор
             for i in Product.objects.all():
                 if param == "продавец":
                     params.append(i.seller)
                 if param == "цвет":
                     params.append(i.color)
+            params = list(set(params))
             return render(request, 'search/product_list.html', {'product_list': queryset,
                                                                 'second': True,
                                                                 'param': param,
@@ -153,3 +168,4 @@ def product_list_sort(request):
             if param == "цвет":
                 queryset = Product.objects.all().filter(color=request.POST['value'])
         return render(request, 'search/product_list.html', {'product_list': queryset})
+    return render(request, 'search/product_list.html', {'product_list': queryset})
